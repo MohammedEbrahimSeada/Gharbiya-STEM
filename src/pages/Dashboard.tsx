@@ -19,18 +19,20 @@ import {
   ChevronRight
 } from 'lucide-react';
 import LanguageContext from '../contexts/LanguageContext';
+import { useUser } from '../contexts/UserContext';
 
 const Dashboard: React.FC = () => {
   const { language } = useContext(LanguageContext);
+  const { user, logout: logoutUser } = useUser();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Mock user data
-  const user = {
-    name: language === 'en' ? 'Ahmed Hassan' : 'أحمد حسن',
-    email: 'ahmed.hassan@student.stemgharbiya.edu.eg',
-    grade: language === 'en' ? '11th Grade' : 'الصف الحادي عشر',
-    stemField: language === 'en' ? 'Physics' : 'الفيزياء',
+  // Fallback user data if not available from API
+  const userData = user || {
+    name: language === 'en' ? 'Student' : 'طالب',
+    email: 'student@stemgharbiya.edu.eg',
+    grade: language === 'en' ? 'Grade' : 'الصف',
+    stemField: language === 'en' ? 'STEM' : 'العلوم والتكنولوجيا',
     avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1587&q=80'
   };
 
@@ -136,6 +138,7 @@ const Dashboard: React.FC = () => {
 
   const handleLogout = () => {
     // Handle logout logic here
+    logoutUser();
     navigate('/login');
   };
 
@@ -170,13 +173,13 @@ const Dashboard: React.FC = () => {
             </button>
             <div className="flex items-center space-x-3">
               <img
-                src={user.avatar}
-                alt={user.name}
+                src={userData.avatar}
+                alt={userData.name}
                 className="h-8 w-8 rounded-full object-cover"
               />
               <div className="hidden md:block text-right">
-                <div className="text-sm font-medium text-gray-900">{user.name}</div>
-                <div className="text-xs text-gray-500">{user.grade}</div>
+                <div className="text-sm font-medium text-gray-900">{userData.name}</div>
+                <div className="text-xs text-gray-500">{userData.grade}</div>
               </div>
             </div>
           </div>
@@ -193,13 +196,13 @@ const Dashboard: React.FC = () => {
             <div className="p-6 border-b border-gray-200">
               <div className="flex items-center space-x-3">
                 <img
-                  src={user.avatar}
-                  alt={user.name}
+                  src={userData.avatar}
+                  alt={userData.name}
                   className="h-12 w-12 rounded-full object-cover"
                 />
                 <div>
-                  <div className="font-medium text-gray-900">{user.name}</div>
-                  <div className="text-sm text-gray-500">{user.stemField}</div>
+                  <div className="font-medium text-gray-900">{userData.name}</div>
+                  <div className="text-sm text-gray-500">{userData.stemField}</div>
                 </div>
               </div>
             </div>
@@ -245,7 +248,7 @@ const Dashboard: React.FC = () => {
           {/* Welcome Section */}
           <div className="mb-8">
             <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
-              {language === 'en' ? `Welcome back, ${user.name.split(' ')[0]}!` : `مرحبًا بعودتك، ${user.name.split(' ')[0]}!`}
+              {language === 'en' ? `Welcome back, ${userData.name.split(' ')[0]}!` : `مرحبًا بعودتك، ${userData.name.split(' ')[0]}!`}
             </h1>
             <p className="text-gray-600">
               {language === 'en' 

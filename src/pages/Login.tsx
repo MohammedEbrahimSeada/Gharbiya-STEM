@@ -1,11 +1,18 @@
 import React, { useState, useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Eye, EyeOff, GraduationCap, Mail, Lock, Loader2 } from 'lucide-react';
 import LanguageContext from '../contexts/LanguageContext';
+import { useUser } from '../contexts/UserContext';
+import { setCookie } from '../utils/cookies';
 
 const Login: React.FC = () => {
   const { language } = useContext(LanguageContext);
+  const { setUser } = useUser();
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Get the intended destination from the location state
+  const from = location.state?.from?.pathname || '/dashboard';
   
   const [formData, setFormData] = useState({
     email: '',
@@ -43,11 +50,74 @@ const Login: React.FC = () => {
     
     setIsLoading(true);
     
-    // Simulate API call
+    try {
+      const response = await fetch('http://localhost:8000/api/login/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: formData.email,
+        password: formData.password
+      })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setIsLoading(false);
+        setErrors({
+          email: '',
+          password: language === 'en'
+            ? (data.message || 'Invalid email or password')
+            : (data.message || 'البريد الإلكتروني أو كلمة المرور غير صحيحة')
+        });
+        return;
+      }
+
+      // Store user data from API response
+      if (data.user) {
+        setUser({
+          id: data.id,
+          name: data.user.name || data.user.firstName + ' ' + data.user.lastName,
+          email: data.user.email,
+          grade: data.user.grade,
+          stemField: data.user.stemField,
+          avatar: data.user.avatar,
+          role: data.user.role
+        });
+      }
+
+      // Store authentication token if provided
+      if (data.token) {
+        localStorage.setItem('token', data.token);
+      }
+
+      // Handle acc_token cookie when remember me is checked
+      if (data.acc_token && formData.rememberMe) {
+        // Set the acc_token as a cookie with 30-day expiration for remember me
+        setCookie('acc_token', data.acc_token, 30);
+      } else if (data.acc_token && !formData.rememberMe) {
+        // Set session cookie (expires when browser closes) if remember me is not checked
+        setCookie('acc_token', data.acc_token);
+      }
+
+      // Navigate to dashboard on successful login
+      setIsLoading(false);
+      navigate(from, { replace: true });
+    } catch (error) {
+      setIsLoading(false);
+      setErrors({
+      email: '',
+      password: language === 'en'
+        ? 'Something went wrong. Please try again.'
+        : 'حدث خطأ ما. يرجى المحاولة مرة أخرى.'
+      });
+    }
     setTimeout(() => {
       setIsLoading(false);
       // Navigate to dashboard on successful login
-      navigate('/dashboard');
+      navigate(from, { replace: true });
     }, 2000);
   };
 
