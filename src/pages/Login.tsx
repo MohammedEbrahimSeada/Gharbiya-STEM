@@ -58,7 +58,8 @@ const Login: React.FC = () => {
       },
       body: JSON.stringify({
         email: formData.email,
-        password: formData.password
+        password: formData.password,
+        remember: formData.rememberMe
       })
       });
 

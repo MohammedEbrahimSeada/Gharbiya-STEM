@@ -1,10 +1,13 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, GraduationCap, Mail, Lock, User, ChevronDown, Loader2 } from 'lucide-react';
+import { Eye, EyeOff, GraduationCap, Mail, Lock, User, ChevronDown, Loader2, Hash, Image } from 'lucide-react';
 import LanguageContext from '../contexts/LanguageContext';
+import { useUser } from '../contexts/UserContext';
+import { setCookie } from '../utils/cookies';
 
 const Register: React.FC = () => {
   const { language } = useContext(LanguageContext);
+  const { setUser } = useUser();
   const navigate = useNavigate();
   
   const [formData, setFormData] = useState({
@@ -13,6 +16,8 @@ const Register: React.FC = () => {
     password: '',
     confirmPassword: '',
     gradeLevel: '',
+    code: '',
+    avatar: '',
     stemField: '',
     userType: 'student',
     agreeToTerms: false
@@ -22,6 +27,7 @@ const Register: React.FC = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const gradeLevels = [
     { value: '10', label: language === 'en' ? '10th Grade' : 'الصف العاشر' },
@@ -51,8 +57,6 @@ const Register: React.FC = () => {
       newErrors.email = language === 'en' ? 'Email is required' : 'البريد الإلكتروني مطلوب';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = language === 'en' ? 'Please enter a valid email' : 'يرجى إدخال بريد إلكتروني صحيح';
-    } else if (!formData.email.includes('stemgharbiya.edu.eg') && !formData.email.includes('student.stemgharbiya.edu.eg')) {
-      newErrors.email = language === 'en' ? 'Please use your school email address' : 'يرجى استخدام البريد الإلكتروني المدرسي';
     }
     
     // Password validation
@@ -80,6 +84,20 @@ const Register: React.FC = () => {
       newErrors.gradeLevel = language === 'en' ? 'Please select your grade level' : 'يرجى اختيار مستوى الصف';
     }
     
+    // Code validation (for students)
+    if (formData.userType === 'student' && !formData.code.trim()) {
+      newErrors.code = language === 'en' ? 'Student code is required' : 'كود الطالب مطلوب';
+    } else if (formData.userType === 'student' && formData.code.trim() && !/^\d+$/.test(formData.code.trim())) {
+      newErrors.code = language === 'en' ? 'Student code must contain only numbers' : 'كود الطالب يجب أن يحتوي على أرقام فقط';
+    }
+    
+    // Avatar validation (optional but must be valid URL if provided)
+    if (formData.avatar.trim() && !/^https?:\/\/.+\.(jpg|jpeg|png|gif|webp)$/i.test(formData.avatar.trim())) {
+      newErrors.avatar = language === 'en' 
+        ? 'Avatar must be a valid image URL (jpg, jpeg, png, gif, webp)' 
+        : 'الصورة الشخصية يجب أن تكون رابط صورة صحيح (jpg, jpeg, png, gif, webp)';
+    }
+    
     // STEM Field validation
     if (!formData.stemField) {
       newErrors.stemField = language === 'en' ? 'Please select your STEM field' : 'يرجى اختيار مجال STEM';
@@ -101,22 +119,113 @@ const Register: React.FC = () => {
     
     setIsLoading(true);
     
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      // Prepare the request payload according to the API specification
+      const requestPayload = {
+        name: formData.fullName,
+        email: formData.email,
+        grade: formData.userType === 'student' && formData.gradeLevel ? parseInt(formData.gradeLevel) : null,
+        code: formData.userType === 'student' && formData.code ? parseInt(formData.code) : null,
+        stemField: formData.stemField,
+        avatar: formData.avatar.trim() || "", // Use provided avatar or empty string
+        role: formData.userType, // 'student' or 'teacher'
+        password: formData.password
+      };
+
+      const response = await fetch('http://localhost:8000/api/register/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestPayload)
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setIsLoading(false);
+        setErrors({
+          email: '',
+          password: '',
+          general: language === 'en'
+            ? (data.message || 'Registration failed. Please try again.')
+            : (data.message || 'فشل في التسجيل. يرجى المحاولة مرة أخرى.')
+        });
+        return;
+      }
+
+      // Store user data from API response
+      if (data) {
+        setUser({
+          id: data.id || Date.now().toString(), // Fallback ID if not provided
+          name: data.name,
+          email: data.email,
+          grade: data.grade,
+          code: data.code,
+          stemField: data.stemField,
+          avatar: data.avatar,
+          role: data.role
+        });
+
+        // Handle cookie if provided in response
+        if (data.cookie) {
+          // Set the cookie as a session cookie (will expire when browser closes)
+          setCookie('acc_token', data.cookie);
+        }
+
+        setIsLoading(false);
+        
+        // Show success message briefly before navigating
+        setErrors({});
+        setIsSuccess(true);
+        
+        // Navigate to dashboard on successful registration
+        setTimeout(() => {
+          navigate('/dashboard', { replace: true });
+        }, 1500);
+      } else {
+        setIsLoading(false);
+        setErrors({
+          general: language === 'en'
+            ? 'Registration successful but incomplete data received.'
+            : 'تم التسجيل بنجاح ولكن البيانات غير مكتملة.'
+        });
+      }
+    } catch (error) {
       setIsLoading(false);
-      // Navigate to login page on successful registration
-      navigate('/login');
-    }, 2000);
+      setErrors({
+        general: language === 'en'
+          ? 'Something went wrong. Please try again.'
+          : 'حدث خطأ ما. يرجى المحاولة مرة أخرى.'
+      });
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
     const checked = (e.target as HTMLInputElement).checked;
     
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }));
+    setFormData(prev => {
+      const newData = {
+        ...prev,
+        [name]: type === 'checkbox' ? checked : value
+      };
+      
+      // Clear student-specific fields when switching to teacher
+      if (name === 'userType' && value === 'teacher') {
+        newData.gradeLevel = '';
+        newData.code = '';
+        // Also clear any errors for student-specific fields
+        setErrors(prev => {
+          const newErrors = { ...prev };
+          delete newErrors.gradeLevel;
+          delete newErrors.code;
+          return newErrors;
+        });
+      }
+      
+      return newData;
+    });
     
     // Clear error when user starts typing
     if (errors[name]) {
@@ -154,6 +263,26 @@ const Register: React.FC = () => {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Success Message */}
+            {isSuccess && (
+              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                <p className="text-green-600 text-sm text-center" role="alert">
+                  {language === 'en' 
+                    ? 'Account created successfully! Redirecting to dashboard...'
+                    : 'تم إنشاء الحساب بنجاح! جاري التحويل إلى لوحة التحكم...'}
+                </p>
+              </div>
+            )}
+
+            {/* General Error Message */}
+            {errors.general && !isSuccess && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                <p className="text-red-600 text-sm text-center" role="alert">
+                  {errors.general}
+                </p>
+              </div>
+            )}
+
             {/* User Type Selection */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-3">
@@ -218,7 +347,7 @@ const Register: React.FC = () => {
             {/* Email Field */}
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                {language === 'en' ? 'School Email' : 'البريد الإلكتروني المدرسي'}
+                {language === 'en' ? 'Email Address' : 'البريد الإلكتروني'}
               </label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
@@ -231,7 +360,7 @@ const Register: React.FC = () => {
                   className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-300 ${
                     errors.email ? 'border-red-500' : 'border-gray-300'
                   }`}
-                  placeholder={language === 'en' ? 'name@stemgharbiya.edu.eg' : 'name@stemgharbiya.edu.eg'}
+                  placeholder={language === 'en' ? 'Enter your email address' : 'أدخل بريدك الإلكتروني'}
                 />
               </div>
               {errors.email && (
@@ -239,6 +368,37 @@ const Register: React.FC = () => {
                   {errors.email}
                 </p>
               )}
+            </div>
+
+            {/* Avatar Field */}
+            <div>
+              <label htmlFor="avatar" className="block text-sm font-medium text-gray-700 mb-2">
+                {language === 'en' ? 'Avatar Image URL (Optional)' : 'رابط الصورة الشخصية (اختياري)'}
+              </label>
+              <div className="relative">
+                <Image className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                <input
+                  type="url"
+                  id="avatar"
+                  name="avatar"
+                  value={formData.avatar}
+                  onChange={handleInputChange}
+                  className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-300 ${
+                    errors.avatar ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                  placeholder={language === 'en' ? 'https://example.com/your-photo.jpg' : 'https://example.com/your-photo.jpg'}
+                />
+              </div>
+              {errors.avatar && (
+                <p className="mt-1 text-sm text-red-600" role="alert">
+                  {errors.avatar}
+                </p>
+              )}
+              <p className="mt-1 text-xs text-gray-500">
+                {language === 'en' 
+                  ? 'Supported formats: JPG, JPEG, PNG, GIF, WebP'
+                  : 'الصيغ المدعومة: JPG, JPEG, PNG, GIF, WebP'}
+              </p>
             </div>
 
             {/* Password Field */}
@@ -342,6 +502,34 @@ const Register: React.FC = () => {
               </div>
             )}
 
+            {/* Student Code (for students only) */}
+            {formData.userType === 'student' && (
+              <div>
+                <label htmlFor="code" className="block text-sm font-medium text-gray-700 mb-2">
+                  {language === 'en' ? 'Student Code' : 'كود الطالب'}
+                </label>
+                <div className="relative">
+                  <Hash className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                  <input
+                    type="text"
+                    id="code"
+                    name="code"
+                    value={formData.code}
+                    onChange={handleInputChange}
+                    className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-300 ${
+                      errors.code ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                    placeholder={language === 'en' ? 'Enter your student code' : 'أدخل كود الطالب'}
+                  />
+                </div>
+                {errors.code && (
+                  <p className="mt-1 text-sm text-red-600" role="alert">
+                    {errors.code}
+                  </p>
+                )}
+              </div>
+            )}
+
             {/* STEM Field */}
             <div>
               <label htmlFor="stemField" className="block text-sm font-medium text-gray-700 mb-2">
@@ -406,13 +594,18 @@ const Register: React.FC = () => {
             {/* Register Button */}
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={isLoading || isSuccess}
               className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center min-h-[44px]"
             >
               {isLoading ? (
                 <>
                   <Loader2 className="animate-spin h-5 w-5 mr-2" />
                   {language === 'en' ? 'Creating account...' : 'جاري إنشاء الحساب...'}
+                </>
+              ) : isSuccess ? (
+                <>
+                  <Loader2 className="animate-spin h-5 w-5 mr-2" />
+                  {language === 'en' ? 'Redirecting...' : 'جاري التحويل...'}
                 </>
               ) : (
                 language === 'en' ? 'Create Account' : 'إنشاء حساب'
