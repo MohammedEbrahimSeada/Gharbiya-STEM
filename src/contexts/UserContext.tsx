@@ -43,13 +43,14 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   useEffect(() => {
     const initializeUser = async () => {
       try {
-        // First, check if we have an acc_token cookie
+        // First, check if we have both acc_token and user_id cookies
         const accToken = getCookie('acc_token');
+        const userId = getCookie('user_id');
         
-        if (accToken) {
-          // Try to fetch user context from API using the cookie
+        if (accToken && userId) {
+          // Try to fetch user context from API using both user ID and cookie
           try {
-            const response = await fetch(`http://localhost:8000/api/context/${accToken}`, {
+            const response = await fetch(`http://localhost:8000/api/context/${userId}/${accToken}/`, {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json'
@@ -80,9 +81,10 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
                 }
               }
             } else {
-              // If API call fails, remove invalid cookie
+              // If API call fails, remove invalid cookies
               deleteCookie('acc_token');
-              console.warn('Invalid acc_token cookie, removing it');
+              deleteCookie('user_id');
+              console.warn('Invalid cookies, removing them');
             }
           } catch (apiError) {
             console.error('Error fetching user context from API:', apiError);
@@ -122,8 +124,9 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     setUserState(null);
     localStorage.removeItem('user');
     localStorage.removeItem('token'); // Remove auth token if you're using one
-    // Clear acc_token cookie
+    // Clear all authentication cookies
     deleteCookie('acc_token');
+    deleteCookie('user_id');
   };
 
   const isAuthenticated = user !== null;

@@ -156,8 +156,9 @@ const Register: React.FC = () => {
 
       // Store user data from API response
       if (data) {
+        const userId = data.id || Date.now().toString(); // Fallback ID if not provided
         setUser({
-          id: data.id || Date.now().toString(), // Fallback ID if not provided
+          id: userId,
           name: data.name,
           email: data.email,
           grade: data.grade,
@@ -167,10 +168,12 @@ const Register: React.FC = () => {
           role: data.role
         });
 
-        // Handle cookie if provided in response
+        // Handle cookies if provided in response
         if (data.cookie) {
           // Set the cookie as a session cookie (will expire when browser closes)
           setCookie('acc_token', data.cookie);
+          // Also set the user_id cookie
+          setCookie('user_id', userId.toString());
         }
 
         setIsLoading(false);

@@ -94,13 +94,21 @@ const Login: React.FC = () => {
         localStorage.setItem('token', data.token);
       }
 
-      // Handle acc_token cookie when remember me is checked
+      // Handle acc_token and user_id cookies when remember me is checked
       if (data.acc_token && formData.rememberMe) {
         // Set the acc_token as a cookie with 30-day expiration for remember me
         setCookie('acc_token', data.acc_token, 30);
+        // Set the user_id as a cookie with 30-day expiration for remember me
+        if (data.id) {
+          setCookie('user_id', data.id.toString(), 30);
+        }
       } else if (data.acc_token && !formData.rememberMe) {
         // Set session cookie (expires when browser closes) if remember me is not checked
         setCookie('acc_token', data.acc_token);
+        // Set the user_id as a session cookie
+        if (data.id) {
+          setCookie('user_id', data.id.toString());
+        }
       }
 
       // Navigate to dashboard on successful login
