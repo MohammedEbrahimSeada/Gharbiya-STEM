@@ -139,13 +139,12 @@ const Gallery: React.FC = () => {
   ];
 
   const categories = [
-    { id: 'all', label: language === 'en' ? 'All' : 'الكل' },
-    { id: 'facilities', label: language === 'en' ? 'Facilities' : 'المرافق' },
-    { id: 'events', label: language === 'en' ? 'Events' : 'الفعاليات' },
-    { id: 'students', label: language === 'en' ? 'Students' : 'الطلاب' },
-    { id: 'competitions', label: language === 'en' ? 'Competitions' : 'المسابقات' }
+    { id: 'all',         label: t.all },
+    { id: 'facilities',  label: t.facilities },
+    { id: 'events',      label: t.events },
+    { id: 'students',    label: t.students },
+    { id: 'competitions',label: t.competitions },
   ];
-
   const filteredPhotos = selectedCategory === 'all' 
     ? photos 
     : photos.filter(photo => photo.category === selectedCategory);
@@ -162,12 +161,9 @@ const Gallery: React.FC = () => {
           />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">{t.galleryTitle}</h1>
-          <p className="text-xl md:text-2xl max-w-3xl">
-            {language === 'en' 
-              ? 'Explore our vibrant school community through photos, videos, and student projects that showcase the excellence of STEM education at our institution.'
-              : 'استكشف مجتمعنا المدرسي النابض بالحياة من خلال الصور ومقاطع الفيديو ومشاريع الطلاب التي تُظهر تميز تعليم العلوم والتكنولوجيا والهندسة والرياضيات في مؤسستنا.'
-            }
+          <h1 className="…">{t.galleryTitle}</h1>
+          <p className="…">
+            {t.galleryDesc}
           </p>
         </div>
       </div>
