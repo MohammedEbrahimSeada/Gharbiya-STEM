@@ -27,7 +27,7 @@ const Home: React.FC = () => {
     },
     {
       id: '2',
-      title: language === 'en' ? 'New Robotics Lab Opens at STEM Gharbiya' : 'افتتاح مختبر الروبوتات الجديد في STEM الغربية',
+      title: language === 'en' ? 'STEM Gharbiya Inaugurates New Robotics Lab' : 'افتتاح مختبر الروبوتات الجديد في STEM الغربية',
       excerpt: language === 'en' ? 'We are excited to announce the opening of our state-of-the-art robotics laboratory...' : 'يسعدنا أن نعلن عن افتتاح مختبر الروبوتات المتطور لدينا...',
       date: '2025-03-10',
       image: 'https://images.unsplash.com/photo-1581092921461-39b9d08a9b21?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80',
@@ -63,15 +63,15 @@ const Home: React.FC = () => {
   const testimonials = [
     {
       quote: language === 'en' 
-        ? 'STEM Gharbiya provided me with the knowledge and skills that helped me get accepted into a top engineering program.' 
-        : 'قدمت لي STEM الغربية المعرفة والمهارات التي ساعدتني في القبول في برنامج هندسي متميز.',
+        ? 'The education I received at STEM Gharbiya equipped me with the knowledge and skills that led to my acceptance into a top-tier engineering program.' 
+        : 'لقد زودني التعليم الذي تلقيته في STEM Gharbiya بالمعرفة والمهارات التي أدت إلى قبولي في برنامج هندسي متميز.',
       name: language === 'en' ? 'Ahmed Hassan' : 'أحمد حسن',
       role: language === 'en' ? 'Class of 2024, Now at Cairo University' : 'دفعة 2024، الآن في جامعة القاهرة',
       image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1587&q=80'
     },
     {
       quote: language === 'en'
-        ? 'The project-based learning approach at STEM Gharbiya taught me how to think critically and solve real-world problems.'
+        ? 'The project-based learning approach at STEM Gharbiya taught me to think critically and solve real-world problems effectively.'
         : 'نهج التعلم القائم على المشاريع في STEM الغربية علمني كيفية التفكير النقدي وحل المشكلات الواقعية.',
       name: language === 'en' ? 'Nour El-Sayed' : 'نور السيد',
       role: language === 'en' ? 'Class of 2023, Now at Ain Shams University' : 'دفعة 2023، الآن في جامعة عين شمس',
@@ -79,8 +79,8 @@ const Home: React.FC = () => {
     },
     {
       quote: language === 'en'
-        ? 'The teachers at STEM Gharbiya are exceptional. They inspired me to pursue a career in scientific research.'
-        : 'المعلمون في STEM الغربية استثنائيون. ألهموني لمتابعة مهنة في البحث العلمي.',
+        ? 'The exceptional teachers at STEM Gharbiya inspired me to pursue a career in scientific research.'
+        : 'لقد ألهمني المعلمون المتميزون في STEM Gharbiya لمواصلة مسيرتي المهنية في مجال البحث العلمي.',
       name: language === 'en' ? 'Mohamed Ibrahim' : 'محمد إبراهيم',
       role: language === 'en' ? 'Class of 2022, Now at Alexandria University' : 'دفعة 2022، الآن في جامعة الإسكندرية',
       image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1587&q=80'
@@ -199,8 +199,8 @@ const Home: React.FC = () => {
           <SectionTitle 
             title={language === 'en' ? 'Academic Programs' : 'البرامج الأكاديمية'} 
             subtitle={language === 'en' 
-              ? 'Explore our comprehensive STEM curriculum designed to prepare future innovators'
-              : 'استكشف منهجنا الشامل في العلوم والتكنولوجيا والهندسة والرياضيات المصمم لإعداد المبتكرين في المستقبل'
+              ? 'Explore our comprehensive STEM curriculum for future innovators'
+              : 'استكشف منهجنا الشامل في مجالات العلوم والتكنولوجيا والهندسة والرياضيات (STEM) للمبتكرين المستقبليين'
             }
             centered={true}
           />
@@ -284,7 +284,7 @@ const Home: React.FC = () => {
           <SectionTitle 
             title={t.testimonials} 
             subtitle={language === 'en' 
-              ? 'Hear from our alumni about their experiences at STEM Gharbiya'
+              ? 'Hear from STEM Gharbiya alumni about their experiences'
               : 'اسمع من خريجينا عن تجاربهم في STEM الغربية'
             }
             centered={true}
@@ -315,7 +315,7 @@ const Home: React.FC = () => {
                 </h2>
                 <p className="text-blue-200 mb-6">
                   {language === 'en' 
-                    ? 'Explore our state-of-the-art facilities, laboratories, and learning spaces from the comfort of your home.'
+                    ? 'Curious what it’s like inside STEM Gharbiya? Explore our labs, classrooms, and facilities, all without stepping outside !'
                     : 'استكشف مرافقنا المتطورة والمختبرات ومساحات التعلم من راحة منزلك.'
                   }
                 </p>
