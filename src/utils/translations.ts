@@ -73,12 +73,16 @@ export const translations = {
     archive: 'Archive',
     
     // Gallery Page
-    galleryTitle: 'Gallery',
-    photos: 'Photos',
-    videos: 'Videos',
-    studentProjects: 'Student Projects',
-    schoolEvents: 'School Events',
-    competitions: 'Competitions',
+    galleryTitle: "Our School Gallery",
+    galleryDesc: "Explore our school’s achievements through photos, videos, and student projects that showcase our STEM excellence.",
+    photos: "Photos",
+    videos: "Videos",
+    studentProjects: "Student Projects",
+    all: "All",
+    facilities: "Facilities",
+    events: "Events",
+    students: "Students",
+    competitions: "Competitions",
     
     // Contact Page
     contactTitle: 'Contact Us',
@@ -184,12 +188,16 @@ export const translations = {
     archive: 'الأرشيف',
     
     // Gallery Page
-    galleryTitle: 'معرض الصور',
-    photos: 'الصور',
-    videos: 'الفيديوهات',
-    studentProjects: 'مشاريع الطلاب',
-    schoolEvents: 'فعاليات المدرسة',
-    competitions: 'المسابقات',
+    galleryTitle: "معرض مدرستنا",
+    galleryDesc: "استكشف إنجازات مدرستنا من خلال الصور والفيديوهات ومشروعات الطلاب التي تبرز تميزنا في تعليم العلوم والتكنولوجيا.",
+    photos: "الصور",
+    videos: "الفيديوهات",
+    studentProjects: "مشروعات الطلاب",
+    all: "الكل",
+    facilities: "المرافق",
+    events: "الفعاليات",
+    students: "الطلاب",
+    competitions: "المسابقات",
     
     // Contact Page
     contactTitle: 'اتصل بنا',
