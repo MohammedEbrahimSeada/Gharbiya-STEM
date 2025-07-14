@@ -9,41 +9,54 @@ const About: React.FC = () => {
   const { language } = useContext(LanguageContext);
   const t = translations[language];
 
-  // Sample team data
+  // Sample team 
   const teamMembers = [
-    {
-      name: language === 'en' ? 'Dr. Ahmed Mahmoud' : 'د. أحمد محمود',
-      role: language === 'en' ? 'Principal' : 'المدير',
-      image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1587&q=80',
-      bio: language === 'en' 
-        ? 'Dr. Mahmoud has over 20 years of experience in STEM education and school leadership.'
-        : 'يمتلك الدكتور محمود أكثر من 20 عامًا من الخبرة في تعليم العلوم والتكنولوجيا والهندسة والرياضيات وقيادة المدارس.'
-    },
-    {
-      name: language === 'en' ? 'Dr. Fatima Ali' : 'د. فاطمة علي',
-      role: language === 'en' ? 'Science Department Head' : 'رئيسة قسم العلوم',
-      image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1588&q=80',
-      bio: language === 'en'
-        ? 'Dr. Ali holds a PhD in Biochemistry and has led numerous research projects with students.'
-        : 'تحمل الدكتورة علي درجة الدكتوراه في الكيمياء الحيوية وقادت العديد من المشاريع البحثية مع الطلاب.'
-    },
-    {
-      name: language === 'en' ? 'Prof. Omar Hassan' : 'أ. عمر حسن',
-      role: language === 'en' ? 'Mathematics Department Head' : 'رئيس قسم الرياضيات',
-      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80',
-      bio: language === 'en'
-        ? 'Prof. Hassan specializes in applied mathematics and has published several papers on mathematical modeling.'
-        : 'يتخصص الأستاذ حسن في الرياضيات التطبيقية ونشر العديد من الأوراق البحثية حول النمذجة الرياضية.'
-    },
-    {
-      name: language === 'en' ? 'Eng. Laila Kamal' : 'م. ليلى كمال',
-      role: language === 'en' ? 'Engineering Department Head' : 'رئيسة قسم الهندسة',
-      image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1061&q=80',
-      bio: language === 'en'
-        ? 'Eng. Kamal has extensive industry experience in mechanical engineering and robotics.'
-        : 'تمتلك المهندسة كمال خبرة واسعة في مجال الهندسة الميكانيكية والروبوتات.'
-    }
-  ];
+  {
+    name: language === 'en' ? 'Mr. Ahmed Emara' : 'السيد احمد عمارة',
+    role: language === 'en' ? 'Principal' : 'المدير',
+    image: 'https://drive.google.com/thumbnail?id=1L6Doy5RXQFeNFbzOxtlQe2HVEdA1RLQ T',
+    bio: language === 'en'
+      ? 'Mr. Ahmed Emara holds a Doctorate in Educational Leadership and has guided the school to excellence for over 20 years.'
+      : 'يمتلك السيد احمد عمارة دكتوراه في القيادة التربوية وقد قاد المدرسة نحو التميز لأكثر من 20 عامًا.',
+    description: language === 'en'
+      ? 'Mr. Ahmed Emara provides strategic leadership, oversees academic programs, and ensures the overall success and well‑being of students and staff.'
+      : 'يقدّم السيد احمد عمارة القيادة الاستراتيجية، ويشرف على البرامج الأكاديمية، ويضمن نجاح ورفاهية الطلاب والمعلمين.'
+  },
+  {
+    name: language === 'en' ? 'Ms. Eman' : 'السيدة ايمان',
+    role: language === 'en' ? 'Vice Principal' : 'وكيلة المدرسة',
+    image: 'https://drive.google.com/thumbnail?id=1XpM8s6DdtZ4LBPKRlV52IjSWOYSopEv z',
+    bio: language === 'en'
+      ? 'Ms. Eman holds an MSc in Biochemistry and has spearheaded numerous student research projects, fostering inquiry and innovation.'
+      : 'تحمل السيدة ايمان ماجستير في الكيمياء الحيوية وقادت العديد من مشاريع البحث الطلابي، معززة روح الاستقصاء والابتكار.',
+    description: language === 'en'
+      ? 'Ms. Eman supports school administration, manages day‑to‑day operations, and coordinates student affairs and discipline.'
+      : 'تدعم السيدة ايمان إدارة المدرسة، وتدير العمليات اليومية، وتنسّق شؤون وانضباط الطلاب.'
+  },
+  {
+    name: language === 'en' ? 'Mr. Mohamed Abdeltawwab' : 'السيد محمد عبد التواب',
+    role: language === 'en' ? 'Social Specialist' : 'الاخصائى الاجتماعى',
+    image: 'https://images.unsplash.com/photo--5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80',
+    bio: language === 'en'
+      ? 'Mr. Mohamed Abdeltawwab holds a degree in Social Work and has over 10 years of experience counseling and advocating for student well‑being.'
+      : 'يمتلك السيد محمد عبد التواب درجة في العمل الاجتماعي ولديه أكثر من 10 سنوات خبرة في الإرشاد والدفاع عن رفاهية الطلاب.',
+    description: language === 'en'
+      ? 'Mr. Mohamed Abdeltawwab counsels students, develops welfare programs, and liaises with families to support social and emotional development.'
+      : 'يقدّم السيد محمد عبد التواب الإرشاد للطلاب، ويطور برامج الرعاية، ويتواصل مع الأسر لدعم التطور الاجتماعي والعاطفي.'
+  },
+  {
+    name: language === 'en' ? 'Ms. Hala Hassan' : 'السيدة هالة حسن',
+    role: language === 'en' ? 'Head of Physics Department' : 'رئيسة قسم الفيزياء',
+    image: 'https://images.unsplash.com/photo--15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fA%3D%3D&auto=format&fit=crop&w=1061&q=80',
+    bio: language === 'en'
+      ? 'Ms. Hala Hassan is a trained mechanical engineer with 15 years of industry experience in engineering design and robotics integration.'
+      : 'تمتلك السيدة هالة حسن خلفية في الهندسة الميكانيكية وخبرة صناعية تمتد 15 عامًا في التصميم الهندسي وتكامل الروبوتات.',
+    description: language === 'en'
+      ? 'Ms. Hala Hassan designs curriculum, leads laboratory work, and mentors teachers in delivering hands‑on science education.'
+      : 'تصمم السيدة هالة حسن المناهج، وتقود الأعمال المخبرية، وتوجّه المعلمين في تقديم تعليم علمي تطبيقي.'
+  }
+];
+
 
   // Sample achievements data
   const achievements = [
@@ -92,8 +105,8 @@ const About: React.FC = () => {
           <h1 className="text-4xl md:text-5xl font-bold mb-4">{t.aboutTitle}</h1>
           <p className="text-xl md:text-2xl max-w-3xl">
             {language === 'en' 
-              ? 'Empowering students through excellence in STEM education since 2015.'
-              : 'تمكين الطلاب من خلال التميز في تعليم العلوم والتكنولوجيا والهندسة والرياضيات منذ عام 2015.'
+              ? 'Empowering students through excellence in STEM education since 2017.'
+              : 'تمكين الطلاب من خلال التميز في تعليم العلوم والتكنولوجيا والهندسة والرياضيات منذ عام 2017.'
             }
           </p>
         </div>
@@ -157,7 +170,7 @@ const About: React.FC = () => {
                   ? 'To provide a rigorous, integrated STEM education through project-based learning that fosters critical thinking, creativity, collaboration, and communication skills, enabling students to excel in higher education and future careers.'
                   : 'توفير تعليم صارم ومتكامل في العلوم والتكنولوجيا والهندسة والرياضيات من خلال التعلم القائم على المشاريع الذي يعزز مهارات التفكير النقدي والإبداع والتعاون والتواصل، مما يمكن الطلاب من التفوق في التعليم العالي والمهن المستقبلية.'
                 }
-              </p>
+              </p>  
             </div>
             
             <div className="bg-white p-8 rounded-lg shadow-md">
@@ -177,7 +190,7 @@ const About: React.FC = () => {
           </div>
         </div>
       </section>
-      
+        
       {/* Meet Our Team Section */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -244,3 +257,6 @@ const About: React.FC = () => {
 };
 
 export default About;
+
+
+
