@@ -241,7 +241,7 @@ const Contact: React.FC = () => {
                 <p className="text-gray-600">
                   {language === 'en'
                     ? 'Students must have a minimum of 85% in their preparatory school final exams with strong performance in mathematics and science subjects.'
-                    : 'يجب أن يحصل الطلاب على الحد الأدنى 85% في امتحانات الشهادة الإعدادية النهائية مع أداء قوي في مواد الرياضيات والعلوم.'
+                    : 'يجب أن يحصل الطلاب على الحد الأدنى 95% في امتحانات الشهادة الإعدادية النهائية مع أداء قوي في مواد الرياضيات والعلوم.'
                   }
                 </p>
               </div>
