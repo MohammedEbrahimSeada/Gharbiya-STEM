@@ -142,12 +142,12 @@ const Contact: React.FC = () => {
             {/* Map and Additional Info */}
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-6">
-                {language === 'en' ? 'Visit Our Campus' : 'زر حرمنا الجامعي'}
+                {language === 'en' ? 'Visit Our Campus' : 'زر حرمنا المدرسي'}
               </h2>
               <p className="text-gray-600 mb-6">
                 {language === 'en'
                   ? 'We welcome visitors to our campus. Schedule a tour to see our facilities and meet our faculty.'
-                  : 'نرحب بالزوار في حرمنا الجامعي. حدد موعدًا لجولة لرؤية مرافقنا ومقابلة أعضاء هيئة التدريس لدينا.'
+                  : 'نرحب بالزوار في حرمنا المدرسي. حدد موعدًا لجولة لرؤية مرافقنا ومقابلة أعضاء هيئة التدريس لدينا.'
                 }
               </p>
               
@@ -166,7 +166,7 @@ const Contact: React.FC = () => {
               
               <div className="bg-blue-50 p-6 rounded-lg">
                 <h3 className="text-lg font-semibold mb-4">
-                  {language === 'en' ? 'Campus Tours' : 'جولات الحرم الجامعي'}
+                  {language === 'en' ? 'Campus Tours' : 'جولات الحرم المدرسي'}
                 </h3>
                 <p className="text-gray-600 mb-4">
                   {language === 'en'
@@ -240,7 +240,7 @@ const Contact: React.FC = () => {
                 </h3>
                 <p className="text-gray-600">
                   {language === 'en'
-                    ? 'Students must have a minimum of 85% in their preparatory school final exams with strong performance in mathematics and science subjects.'
+                    ? 'Students must have a minimum of 95% in their preparatory school final exams with strong performance in mathematics and science subjects.'
                     : 'يجب أن يحصل الطلاب على الحد الأدنى 95% في امتحانات الشهادة الإعدادية النهائية مع أداء قوي في مواد الرياضيات والعلوم.'
                   }
                 </p>
